@@ -1,0 +1,80 @@
+#set ($KeyFieldUpper  = $stringUtil.capitalize($keyVar) )
+#set ($TABLE_NAME = $tableName )
+ 
+/**
+ * @author: ${author}
+ * @version: 1.0
+ * @since ${date}  
+ */
+package ${packagePrefix}.model.base;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
+#if($pkResult.size()>1)
+import javax.persistence.EmbeddedId;
+import ${packagePrefix}.model.${className}PK;
+#end
+
+@MappedSuperclass
+public abstract class Base${className}  implements Serializable {
+     @Transient
+     private int hashCode = Integer.MIN_VALUE;
+    
+    #if($pkResult.size()>1)
+     @EmbeddedId
+     #else
+     @Id
+     @Column(name = "$pkResult.get(0).name"  )
+     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="${TABLE_NAME}_SEQ") 
+     #end
+     private ${keyType}  ${keyVar} ;
+
+     #foreach($prop in $columnResult)
+        #set ($fieldName  = ${prop.javaName} )
+        #set ($fieldType  = $prop.dataType )
+        @Column(name = "${prop.name}" )
+    	private $fieldType $fieldName ;
+	
+     #end
+
+
+     public  ${keyType} get${KeyFieldUpper} () {
+		return ${keyVar};
+     }
+
+     public void set${KeyFieldUpper} (${keyType}  ${keyVar}) {
+		this.${keyVar} = ${keyVar};         
+      }
+
+     #foreach($prop in $columnResult)
+        #set ($fieldName  = ${prop.javaName} )
+        #set ($fieldType  =  $prop.dataType )
+        #set ($innerFieldUpper  = $stringUtil.capitalize($fieldName) )
+	public $fieldType get$innerFieldUpper () {
+		return $fieldName;
+	}
+	public void set$innerFieldUpper ($fieldType $fieldName) {
+		this.$fieldName = $fieldName;		
+	}
+     #end
+
+     // constructors
+     public  Base${className} () {
+     
+     }
+
+	/**
+	 * Constructor for primary key
+	 */
+	public Base${className} (${keyType}  ${keyVar}) {
+		this.set${KeyFieldUpper} (${keyVar});
+	}
+
+}

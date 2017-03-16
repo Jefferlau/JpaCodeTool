@@ -1,0 +1,67 @@
+<%@page language="java" errorPage="/common/error.jsp" contentType="text/html;charset=GBK" pageEncoding="GBK"%>
+<!-- tag -->
+<%@include file="/common/header.jsp"%>
+<%@ taglib uri="/WEB-INF/form.tld" prefix="cms"%>
+<html>
+<head>
+<title>编辑</title>
+<!-- import -->
+<%@include file="/common/public.jsp"%>
+<!-- css -->
+<link rel="stylesheet" type="text/css" href="${ctx}/theme/default/main.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/theme/cms/public.css"/>	
+
+<script type="text/javascript">
+	var parentObj = window.dialogArguments;
+	window.returnValue = "0";
+	window.closeWin = function() {
+		window.close();
+	};
+	window.doSure = function() {
+		  var doWhat = $E("doWhat").value;
+		  if ("MOD"==doWhat){
+			document.forms[0].action ="${ctx}/${classVar}/update${className}.mvc";
+		  }
+		  if( checkAllParam(document.forms[0])){
+ 			   document.forms[0].submit();
+			   window.returnValue = "1";
+			   $E("sureBtn").disabled= true;
+		  }
+	};
+	window.actionComplete = function() {
+		var handler = function(tp) {
+			closeWin();
+		};
+		Win.succeedInfo({
+			message : "成功",
+			handler : handler
+		});
+	};
+	jQuery(function() {
+	});
+</script>
+</head>
+<body scroll="no">
+
+	<form action="${ctx}/${classVar}/save${className}.mvc" name="editForm" target="saveResultPage" method="post">
+			<input type="hidden" name="doWhat" value="${param.doWhat}" /> 
+			<input type="hidden" name="idEdit" value="${param.idEdit}" />
+			
+		 <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+			#foreach($prop in $columnResult)
+			        #set ($fieldName  = ${prop.javaName} )
+			        #set ($fieldType  =  $prop.dataType )
+			        #set ($innerFieldUpper  = $stringUtil.capitalize($fieldName) )
+			        #set ($required  = ('false'==$prop.nullable) )
+				<tr>
+						 <td align="right" class="l-table-edit-td"><spring:message code="$classVar.$fieldName" /></td>
+						 <td align="left" class="l-table-edit-td"><input name="$fieldName" type="text" id="$fieldName" ltype="text"	validate="{required:$required}" />
+						 </td> 
+				</tr>
+			#end
+		</table>
+	</form>
+	<iframe name="saveResultPage"  style="display:none;" src=""></iframe>
+	<script type="text/javascript" src="${ctx}/js/util/footer.js"></script>
+</body>
+</html>

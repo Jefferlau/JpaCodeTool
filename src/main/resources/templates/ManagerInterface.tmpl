@@ -1,0 +1,89 @@
+
+/**
+ * @author: ${author}
+ * @version: 1.0
+ * @since ${date}
+ */
+package ${packagePrefix}.service;
+
+import java.util.List;
+import java.util.Collection;
+import ${packagePrefix}.model.${className};
+import ${packagePrefix}.dao.${className}DAO;
+#if($pkResult.size()>1)
+import ${packagePrefix}.model.${className}PK;
+#end
+
+
+
+/**
+ * Business Delegate (Proxy) Interface to handle communication between web and
+ * persistence layer.
+ *
+ * <p>
+ * <a href="${className}Manager.java.html"><i>View Source</i></a>
+ * </p>
+ *
+ */
+public interface ${className}Manager {
+   
+    /**
+     *
+     * @param ${classVar}name
+     * @return ${className}
+     */
+
+    public ${className} get${className}($keyType pkey);
+
+    /**
+     * Retrieves all of ${classVar}s
+     * 
+     * @return List
+     */
+    public List getAll${className}s();
+
+    /**
+     * Retrieves a list of ${classVar}s, filtering with parameters on a ${classVar} object
+     * @param ${classVar} parameters to filter on
+     * @return List
+     */
+    public List get${className}s(${className} ${classVar});
+
+    /**
+     * Save a ${classVar}'s information
+     *
+     * @param ${classVar} the ${classVar}'s information
+     *
+     */
+    public void save${className}(${className} ${classVar});
+    
+#if (${needUpdate}) 
+    /**
+     * Update a ${classVar}'s information
+     *
+     * @param ${classVar} the ${classVar}'s information
+     * 
+     */
+     public void update${className}(${className} ${classVar});
+#end  
+
+    /**
+     * Removes a ${classVar} from the database by their ${keyVar}
+     *
+     * @param $keyVar the ${classVar}'s ${classVar}name
+     * 
+     */
+
+    public void remove${className}($keyType pkey);
+
+  
+    /**
+     * @param c
+     */
+    public void remove${className}(Collection<$keyType> pkeys);
+    
+	/** 
+	 * @param keys 1,2,3
+	 */
+	public void remove${className}(String pkeys);  
+}

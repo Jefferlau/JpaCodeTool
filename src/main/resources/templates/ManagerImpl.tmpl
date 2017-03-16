@@ -1,0 +1,98 @@
+/**
+ * @author: ${author}
+ * @version: 1.0
+ * @since ${date}
+ */
+package ${packagePrefix}.service.impl;
+import org.springframework.stereotype.Service;
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
+import ${packagePrefix}.dao.${className}DAO;
+import ${packagePrefix}.model.${className};
+import ${packagePrefix}.service.${className}Manager;
+#if($pkResult.size()>1)
+import ${packagePrefix}.model.${className}PK;
+#end
+import org.myframework.service.impl.BaseManagerImpl;
+
+
+@Service("${classVar}Manager")
+public class ${className}ManagerImpl extends BaseManagerImpl implements ${className}Manager {
+    @Resource(name="${classVar}DAO")
+    private ${className}DAO ${classVar}DAO;
+
+    /**
+     * @see ${packagePrefix}.service.${className}Manager#get${className}(java.lang.String)
+     */
+    public ${className} get${className}($keyType pkey) {
+        return ${classVar}DAO.get${className}(pkey);
+    }
+    
+    /**
+     * @see ${packagePrefix}.service.${className}Manager#getAll${className}s(${packagePrefix}.model.${className})
+     */
+    public List getAll${className}s() {
+        return ${classVar}DAO.getAll${className}s();
+    }
+
+    /**
+     * @see ${packagePrefix}.service.${className}Manager#get${className}s(${packagePrefix}.model.${className})
+     */
+    public List get${className}s(${className} $classVar) {
+        return ${classVar}DAO.get${className}s($classVar);
+    }
+
+    /**
+     * @see ${packagePrefix}.service.${className}Manager#save${className}(${packagePrefix}.model.${className})
+     */
+    public void save${className}(${className} $classVar) {
+        ${classVar}DAO.save${className}($classVar);
+    }
+    
+#if ($needUpdate) 
+    /**
+     * @see ${packagePrefix}.service.${className}Manager#update${className}(${packagePrefix}.model.${className})
+     */
+    public void update${className}(${className} $classVar) {
+        ${classVar}DAO.update${className}($classVar);
+    }
+#end
+
+    /**
+     * @see ${packagePrefix}.service.${className}Manager#remove${className}($keyType)
+     */
+    public void remove${className}($keyType pkey) {
+        if (log.isDebugEnabled()) {
+            log.debug("removing $classVar: " + pkey);
+        }
+
+        ${classVar}DAO.remove${className}(pkey);
+    }
+    
+     /**
+     */
+	public void remove${className}(Collection<$keyType> pkeys) {
+		if (log.isDebugEnabled()) {
+            log.debug("removing ${classVar}: " + pkeys);
+        }
+        ${classVar}DAO.remove${className}(pkeys);
+	}
+	
+	/**
+	 * 
+	 * @param keys  1,2,3
+	 */
+	public void remove${className}(String pkeys){
+		String[] ids = pkeys.split(",");
+		List<$keyType> list = null;
+		if(ids.length > 0){
+			list = new ArrayList<$keyType>(ids.length);
+			for(String id:ids){
+				list.add($keyType.valueOf(id));
+			}
+			remove${className}(list);
+		}
+	}
+}

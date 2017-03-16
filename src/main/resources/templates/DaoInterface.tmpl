@@ -1,0 +1,76 @@
+/**
+ * @author: ${author}
+ * @version: 1.0
+ * @since ${date}
+ */
+package ${packagePrefix}.dao;
+
+import java.util.List;
+import java.util.Collection;
+import org.myframework.dao.DAO;
+import ${packagePrefix}.model.${className};
+
+#if($pkResult.size()>1)
+import ${packagePrefix}.model.${className}PK;
+#end
+
+/**
+ * Data Access Object (DAO) interface.
+ *
+ * <p>
+ * <a href="${className}DAO.java.html><i>View Source</i></a>
+ * </p>
+ *
+ * @author <a href="${mailId}">${mailName}</a>
+ */
+public interface ${className}DAO extends DAO {
+    /**
+     * Gets ${className}s information based on ${keyVar}
+     * @param $keyVar the current $keyVar
+     * @return $className populated $className object
+     */
+
+    public $className get${className}($keyType $keyVar);
+
+
+    /**
+     * Gets all ${className}s .
+     *
+     * @return List populated list of ${className}s
+     */
+    public List getAll${className}s();
+    
+    /**
+     * Gets a list of ${className}s based on parameters passed in.
+     *
+     * @return List populated list of ${className}s
+     */
+    public List get${className}s($className $classVar);
+
+    /**
+     * Save a ${classVar}'s information
+     * @param $classVar the object to be saved
+     * @return $className the updated $classVar object
+     */
+    public void save$className($className $classVar);
+    
+#if ($needUpdate)
+    /**
+     * Update a ${classVar}'s information
+     * @param $classVar the object to be saved
+     * @return $className the updated $classVar object
+     */
+    public void update$className($className $classVar);
+#end
+
+    /**
+     * Removes a $classVar from the database by primary Key id
+     * @param $keyVar the ${classVar}'s $keyVar
+     */
+    public void remove${className}($keyType $keyVar);
+    
+     /**
+     * @param c
+     */
+    public void remove${className}(Collection<$keyType> ${keyVar}s);
+}

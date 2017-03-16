@@ -1,0 +1,155 @@
+/**
+ * @author: ${author}
+ * @version: 1.0
+ * @since ${date}
+ */
+
+package ${packagePrefix}.web.action;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONObject;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.servlet.ModelAndView;
+
+import org.myframework.web.BaseActionController;
+import org.myframework.web.JspPkg;
+
+import ${packagePrefix}.service.${className}Manager;
+import ${packagePrefix}.model.${className};
+#if($pkResult.size()>1)
+import ${packagePrefix}.model.${className}PK;
+#end
+
+@Controller
+@JspPkg(value="${jspDir}/")
+public class ${className}Controller  extends BaseActionController {
+
+	@Resource (name="${classVar}Manager")
+	private	${className}Manager ${classVar}Manager;
+	
+	/**
+	 * Initialization
+	 * This is main entrance!
+	 * @see http://localhost:7001/${classVar}/init${className}Mag.mvc
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */	
+	public ModelAndView init${className}Mag(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		return getReqView(request);
+	}
+	
+	/**
+	 * An Edit Initialization 
+	 * @see http://localhost:7001/${classVar}/init${className}Edit.mvc
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */	
+	public ModelAndView init${className}Edit(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String doWhat = request.getParameter("doWhat");
+		${className}  ${classVar} = null;
+		if("ADD".equals(doWhat)){
+			${classVar} = new ${className}();
+		}
+		else if("MOD".equals(doWhat)){
+			String idEdit = request.getParameter("idEdit");
+			${classVar} = ${classVar}Manager.get${className}(${keyType}.valueOf(idEdit));
+		}
+		request.setAttribute("${classVar}", ${classVar});
+		return getReqView(request);
+	}
+	
+	 /**
+	 * Query ${className}
+	 * @see http://localhost:7001/${classVar}/qry${className}.mvc
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */		
+	public ModelAndView qry${className}List(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		Map<String, Object> paramMap = this.getQryMap(request);
+		String serviceName = "${servicePre}.qry${className}List";
+		List resultList = new ArrayList();
+		resultList = myJdbcTemplate.selectPageList(serviceName, paramMap  );
+		request.setAttribute("resultList", resultList);
+		return getReqView(request);
+	}
+
+	 /**
+	 * Save ${className}
+	 * @see http://localhost:7001/${classVar}/save${className}.mvc
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */		
+	public ModelAndView save${className}(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		${className}  ${classVar} = new ${className}();
+		this.parseRequest(${classVar}, request);
+		${classVar}Manager.save${className}( $classVar);
+
+		return this.getResultPage();
+	}
+	
+	 /**
+	 * Update ${className}
+	 * @see http://localhost:7001/${classVar}/update${className}.mvc
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */	
+	public ModelAndView update${className}(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		${className}  ${classVar} = new ${className}();
+		this.parseRequest(${classVar}, request);
+
+		${classVar}Manager.update${className}( $classVar);
+
+		return this.getResultPage();
+	}
+	
+	 /**
+	 * Remove ${className}
+	 * @see http://localhost:7001/${classVar}/remove${className}.mvc
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ModelAndView remove${className}(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String doWhat = request.getParameter("doWhat");
+		String idEdit = request.getParameter("idEdit");
+		//log.debug("doWhat :" + doWhat + " idEdit: " + idEdit );
+		int idCount = idEdit.split(",").length;
+		if(idCount == 1){
+			${classVar}Manager.remove${className}( ${keyType} .valueOf(idEdit));
+		}else if(idCount > 1){
+			${classVar}Manager.remove${className}(idEdit);
+		}
+		return this.getResultPage();
+	}
+	
+}
+
+
+

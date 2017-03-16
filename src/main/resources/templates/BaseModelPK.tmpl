@@ -1,0 +1,50 @@
+/**
+ * @author: ${author}
+ * @version: 1.0
+ * @since ${date}
+ */
+package ${packagePrefix}.model.base;
+
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
+public abstract class Base${className}PK  implements Serializable {
+ 
+     #foreach($prop in $pkResult)
+        #set ($fieldName  = ${prop.javaName} )
+        #set ($fieldType  = $prop.dataType )
+        
+    @Column(name = "${prop.name}" )
+    private $fieldType $fieldName ;
+   
+     #end
+
+     #foreach($prop in $pkResult)
+        #set ($fieldName  = $prop.get("FIELD_NAME") )
+        #set ($fieldType  = $prop.get("FILED_TYPE") )
+        #set ($innerFieldUpper  = $stringUtil.capitalize($fieldName) )
+     	    
+	 public $fieldType get$innerFieldUpper () {
+		return $fieldName;
+	 }
+	 
+	 public void set$innerFieldUpper ($fieldType $fieldName) {
+		this.$fieldName = $fieldName;		
+	 }
+     #end
+
+     // constructors
+     public  Base${className}PK () {
+	  initialize();
+     }
+
+	 protected void initialize () {}
+
+
+	 public String toString () {
+		return super.toString();
+	 }
+
+}

@@ -1,0 +1,84 @@
+<%@page language="java" errorPage="/common/error.jsp" contentType="text/html;charset=GBK" pageEncoding="GBK"%>
+<!-- tag -->
+<%@include file="/common/header.jsp"%>
+<%@ taglib uri="/WEB-INF/form.tld" prefix="cms"%>
+<html>
+<head>
+<title>编辑</title>
+<!-- import -->
+<%@include file="/common/public.jsp"%>
+<!-- css -->
+<link rel="stylesheet" type="text/css" href="${ctx}/theme/default/main.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/theme/cms/public.css"/>	
+
+<script type="text/javascript">
+	var parentObj = window.dialogArguments;
+	window.returnValue = "0";
+	window.closeWin = function() {
+		window.close();
+	};
+	window.doSure = function() {
+		  var doWhat = $E("doWhat").value;
+		  if ("MOD"==doWhat){
+			document.forms[0].action ="${ctx}/${classVar}/update${className}.mvc";
+		  }
+		  if( checkAllParam(document.forms[0])){
+ 			   document.forms[0].submit();
+			   window.returnValue = "1";
+			   $E("sureBtn").disabled= true;
+		  }
+	};
+	window.actionComplete = function() {
+		var handler = function(tp) {
+			closeWin();
+		};
+		Win.succeedInfo({
+			message : "成功",
+			handler : handler
+		});
+	};
+	jQuery(function() {
+	});
+</script>
+</head>
+<body scroll="no">
+
+	<form action="${ctx}/${classVar}/save${className}.mvc" name="editForm" target="saveResultPage" method="post">
+			<input type="hidden" name="doWhat" value="${param.doWhat}" /> 
+			<input type="hidden" name="idEdit" value="${param.idEdit}" />
+			
+		<table width="100%" border="0" cellspacing="0" cellpadding="0"
+			class="EditBuilder">
+			<tr>
+		    <td colspan="100%" class="EditBuilderTop"><span class="Title">编辑</span></td>
+		  	</tr>
+			<tr>
+		    <td colspan="100%"><input id="sureBtn" type="button" class="Save" value="保存" onclick="doSure()"/> <input onclick="closeWin()" type="button" class="Return" value="�س�"/></td>
+		  	</tr>
+			<tr>
+				<td colspan="100%" class="SubEditBuilderTop"><span
+					class="SubTitle"> 编辑</span>
+				</td>
+			</tr>
+			#set ($i = 0)
+			#set ($fieldCnt = $editJspResult.size())
+			#foreach($prop in $editJspResult)
+				#set ($fieldTd= $prop.get("COLUMN_TD"))
+				#set ($i = $i +1 )
+				#if( $i%2==1 &&  $i!= $fieldCnt )
+				<tr>
+					$fieldTd 
+				#elseif ( $i%2==1 && $i == $fieldCnt )
+				<tr>$fieldTd </tr>
+				#elseif ( $i%2 == 0 )
+					$fieldTd 
+				</tr>
+				#end  
+			#end
+	
+		</table>
+	</form>
+	<iframe name="saveResultPage"  style="display:none;" src=""></iframe>
+	<script type="text/javascript" src="${ctx}/js/util/footer.js"></script>
+</body>
+</html>

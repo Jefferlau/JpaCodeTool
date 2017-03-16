@@ -1,0 +1,34 @@
+/**
+ * @author: ${author}
+ * @version: 1.0
+ * @since ${date}
+ */
+package ${packagePrefix}.model;
+
+import ${packagePrefix}.model.base.Base${className};
+import javax.persistence.Entity;
+import javax.persistence.Table;
+#if($pkResult.size()>1)
+import ${packagePrefix}.model.${className}PK;
+#else
+import javax.persistence.TableGenerator;
+#end
+
+
+@SuppressWarnings("serial")
+@Entity
+@Table(name = "$TABLE_NAME")
+#if($pkResult.size()==1)
+@TableGenerator(name = "${TABLE_NAME}_PK", pkColumnValue = "${TABLE_NAME}", table = "table_pk_generator", pkColumnName = "TABLE_NAME", valueColumnName = "PK_VALUE", allocationSize = 1)
+#end
+public class ${className} extends Base${className} {
+
+    public ${className} (){
+	super();
+    }
+
+    public ${className} (${keyType} ${keyVar}){
+	super(${keyVar});
+    }
+
+}

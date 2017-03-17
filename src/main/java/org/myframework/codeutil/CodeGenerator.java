@@ -361,6 +361,7 @@ public class CodeGenerator {
         for (Object key : jdbcProperties.keySet()) {
             tool.put(key.toString(), jdbcProperties.get(key));
         }
+        tool.put("tableName", this.tableName);
         //step 3
         Properties properties = new PropertiesUtil().load("templates.cfg");
         for (Object file : properties.values()) {

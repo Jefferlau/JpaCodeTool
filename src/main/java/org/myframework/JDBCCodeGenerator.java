@@ -16,6 +16,8 @@ import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class JDBCCodeGenerator {
     private final static Log log = LogFactory.getLog(JDBCCodeGenerator.class);
@@ -28,13 +30,12 @@ public class JDBCCodeGenerator {
         localProperties.put("user", properties.getProperty("jdbc.username"));
         localProperties.put("password", properties.getProperty("jdbc.password"));
 
-        //	   orcl为数据库的SID
+        // orcl为数据库的SID
         Class.forName(properties.getProperty("jdbc.driver")).newInstance();
         Connection conn = DriverManager.getConnection(properties.getProperty("jdbc.url"), localProperties);
         System.out.println(properties);
         return conn;
     }
-
 
     public static List<Column> getLsColumns(String tableName) throws Exception {
         Connection conn = getConnection();
@@ -84,6 +85,40 @@ public class JDBCCodeGenerator {
         return lsColumns;
     }
 
+    public static List<String> getTableNames(Properties properties) throws Exception {
+        Connection conn = getConnection();
+        List<String> tableNames = new ArrayList<String>();
+
+        String url = properties.getProperty("jdbc.url");
+        String schema = null;
+
+        if (url.contains("jdbc:oracle")) {
+            schema = properties.getProperty("jdbc.username").toUpperCase();
+        } else if (url.contains("jdbc:mysql")) {
+            String patternStr = "\\d+/(\\w+)";
+            Pattern pattern = Pattern.compile(patternStr);
+            Matcher matcher = pattern.matcher(url);
+            if (matcher.find()) {
+                schema = matcher.group(0);
+                schema = matcher.group(1);
+            } else {
+                throw new RuntimeException("解析不到 MySQL 数据库名称！");
+            }
+        } else {
+            schema = "%";
+        }
+
+        DatabaseMetaData meta = conn.getMetaData();
+        ResultSet resultSet = meta.getTables(null, schema, "%", new String[]{"TABLE"});
+
+        while (resultSet.next()) {
+            tableNames.add(resultSet.getString(3));
+            System.out.println(resultSet.getString(3) + " " + resultSet.getString(5));
+        }
+
+        return tableNames;
+    }
+
     /**
      * 代码生成工具调用
      *
@@ -91,12 +126,31 @@ public class JDBCCodeGenerator {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        CodeGenerator code = new CodeGenerator();
+
 
         Properties properties = new PropertiesUtil().load("jdbc.properties");
 
         //代码内容--
         String tableName = properties.getProperty("tableName");
+
+        if (tableName.contains(",")) {
+            String[] tables = tableName.split(",");
+            for (String table : tables) {
+                generatorSingleTable(properties, table.trim().toUpperCase());
+            }
+        } else if (tableName.contains("%")) {
+            List<String> tables = getTableNames(properties);
+            for (String table : tables) {
+                generatorSingleTable(properties, table.trim().toUpperCase());
+            }
+        } else {
+            generatorSingleTable(properties, tableName.toUpperCase());
+        }
+
+    }
+
+    private static void generatorSingleTable(Properties properties, String tableName) throws Exception {
+        CodeGenerator code = new CodeGenerator();
         code.setTablePrefix(properties.getProperty("tablePrefix"));
         code.setPkgPrefix(properties.getProperty("pkgPrefix"));
         code.setDomainPkg(properties.getProperty("domainPkg"));
@@ -104,16 +158,15 @@ public class JDBCCodeGenerator {
         code.setDaoSuffix(properties.getProperty("daoSuffix"));
         code.setModule(properties.getProperty("module"));
         code.setSubModule(properties.getProperty("subModule"));
-        code.setTableName(tableName.toUpperCase());
-        //代码存放目录
+        code.setTableName(tableName);
+        // 代码存放目录
         code.setJavaSource(properties.getProperty("javaSource"));
         code.setResources(properties.getProperty("resources"));
         code.setWebapp(properties.getProperty("webapp"));
 
-//		 数据库读取配置信息
-        code.initCodeTool(getLsColumns(tableName.toUpperCase()));
+        // 数据库读取配置信息
+        code.initCodeTool(getLsColumns(tableName));
         code.createCodeByConf();
-
     }
 
 

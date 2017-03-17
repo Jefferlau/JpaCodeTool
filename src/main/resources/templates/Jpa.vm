@@ -1,0 +1,19 @@
+package ${packagePrefix}${daoPkg};
+
+import ${packagePrefix}${domainPkg}.${className};
+
+#if($pkResult.size()>1)
+import ${packagePrefix}${domainPkg}.${className}.PK;
+#end
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+/**
+* @author ${author}
+* @version 1.0
+* @since ${date}
+*/
+public interface ${className}Repository extends JpaRepository<${className}, #if($pkResult.size() > 1)${className}.PK#else${keyType}#end> {
+
+}
+

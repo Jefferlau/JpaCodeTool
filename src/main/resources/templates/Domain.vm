@@ -23,8 +23,8 @@ import javax.persistence.SequenceGenerator;
 #set ($TABLE_NAME = $tableName )
 
 /**
-* @author: ${author}
-* @version: 1.0
+* @author ${author}
+* @version 1.0
 * @since ${date}
 */
 @Entity

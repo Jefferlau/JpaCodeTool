@@ -7,149 +7,127 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ver:	1.0 
+ * ver:	1.0
  * log:	2007-5-29
  */
-public class Debug
-{
-	private boolean debug = true;
-	
-	/**
-	 */
-	private Map recordMap = new HashMap();
-	
-	/**
-	 */
-	private String desc;
-	
-	public Debug( String desc )
-	{
-		this.desc = desc;
-	}
-	
-	public String getDesc()
-	{
-		return this.desc;
-	}
+public class Debug {
+    private boolean debug = true;
 
-	public void setDebug(boolean debug)
-	{
-		this.debug = debug;
-	}
-	
-	public void setDesc(String desc)
-	{
-		this.desc = desc;
-	}
+    /**
+     */
+    private Map recordMap = new HashMap();
 
-	/**
-	 *  
-	 * @param action
-	 */
-	public void start( String action )
-	{
-		if( !debug ) return;
-		Record record = (Record)recordMap.get(action);
-		if( record == null )
-		{
-			record = new Record(action);
-			recordMap.put( action , record );
-		}
-		record.setStart( System.currentTimeMillis() );
-	}
-	/**
-	 *  
-	 * @param action
-	 */
-	public void end( String action )
-	{
-		if( !debug ) return;
-		Record record = (Record)recordMap.get(action);
-		if( record == null )
-		{
-			record = new Record(action);
-			recordMap.put( action , record );
-		}
-		record.setEnd( System.currentTimeMillis() );
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public List getRecords()
-	{
-		return new ArrayList( recordMap.values() );
-	}
-	
+    /**
+     */
+    private String desc;
 
-	public String toString()
-	{
-		if( !debug ) return "";
-		StringBuffer buffer = new StringBuffer(512);
-		buffer.append("\n------------------------------------------ Debug " + this.desc + " End ------------------------------------------ \n{");
-		for( Iterator iter = recordMap.values().iterator() ; iter.hasNext();)
-		{
-			Record record = (Record)iter.next();
-			String action = record.getAction();
-			long start = record.getStart();
-			long end = record.getEnd();
-			buffer.append("\n	" + action + " --------------------- tooks [" + (end - start) + "] millis." );
-		}
-		buffer.append("\n}\n");
-		return buffer.toString();
-	}
-	
-	
-	public static void main(String[] args){
-		Debug debug = new Debug ("锟斤拷时锟斤拷锟斤拷");
-		debug.start("abc");
-		for (int i = 0 ;i<100000000 ;i ++){
-			;
-		}
-		debug.end("abc");
-    	System.out.println(debug);
-	}
-	
-	public static class Record
-	{
-		String action;
-		long start;
-		long end;
-		
-		public Record(String action)
-		{
-			this.action = action;
-		}
+    public Debug(String desc) {
+        this.desc = desc;
+    }
 
-		public long getEnd()
-		{
-			return end;
-		}
+    public String getDesc() {
+        return this.desc;
+    }
 
-		public void setEnd(long end)
-		{
-			this.end = end;
-		}
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
 
-		public String getAction()
-		{
-			return action;
-		}
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
-		public void setAction(String action)
-		{
-			this.action = action;
-		}
+    /**
+     * @param action
+     */
+    public void start(String action) {
+        if (!debug) return;
+        Record record = (Record) recordMap.get(action);
+        if (record == null) {
+            record = new Record(action);
+            recordMap.put(action, record);
+        }
+        record.setStart(System.currentTimeMillis());
+    }
 
-		public long getStart()
-		{
-			return start;
-		}
+    /**
+     * @param action
+     */
+    public void end(String action) {
+        if (!debug) return;
+        Record record = (Record) recordMap.get(action);
+        if (record == null) {
+            record = new Record(action);
+            recordMap.put(action, record);
+        }
+        record.setEnd(System.currentTimeMillis());
+    }
 
-		public void setStart(long start)
-		{
-			this.start = start;
-		}
-	}
+    /**
+     * @return
+     */
+    public List getRecords() {
+        return new ArrayList(recordMap.values());
+    }
+
+
+    public String toString() {
+        if (!debug) return "";
+        StringBuffer buffer = new StringBuffer(512);
+        buffer.append("\n------------------------------------------ Debug " + this.desc + " End ------------------------------------------ \n{");
+        for (Iterator iter = recordMap.values().iterator(); iter.hasNext(); ) {
+            Record record = (Record) iter.next();
+            String action = record.getAction();
+            long start = record.getStart();
+            long end = record.getEnd();
+            buffer.append("\n	" + action + " --------------------- tooks [" + (end - start) + "] millis.");
+        }
+        buffer.append("\n}\n");
+        return buffer.toString();
+    }
+
+
+    public static void main(String[] args) {
+        Debug debug = new Debug("锟斤拷时锟斤拷锟斤拷");
+        debug.start("abc");
+        for (int i = 0; i < 100000000; i++) {
+            ;
+        }
+        debug.end("abc");
+        System.out.println(debug);
+    }
+
+    public static class Record {
+        String action;
+        long start;
+        long end;
+
+        public Record(String action) {
+            this.action = action;
+        }
+
+        public long getEnd() {
+            return end;
+        }
+
+        public void setEnd(long end) {
+            this.end = end;
+        }
+
+        public String getAction() {
+            return action;
+        }
+
+        public void setAction(String action) {
+            this.action = action;
+        }
+
+        public long getStart() {
+            return start;
+        }
+
+        public void setStart(long start) {
+            this.start = start;
+        }
+    }
 }

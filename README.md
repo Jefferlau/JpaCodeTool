@@ -1,4 +1,7 @@
+暂时不知道原作者是谁，待找到后添加。本项目在原作基础上修改而来。
+
+
 src/main/resources/templates 代码生成模板目录
 src/main/resources/jdbc.properties 配置信息文件：数据库连接的信息，代码生成目录，需要生成代码的表
 src/main/resources/templates.cfg   配置文件：使用哪些代码模板，生成的文件所在的目录
-src/main/resources/templates.cfg  可以使用jdbc.properties中的变量如：tableName ，javaSource等，避免重复配置
+src/main/resources/templates.cfg   可以使用jdbc.properties中的变量如：tableName ，javaSource等，避免重复配置

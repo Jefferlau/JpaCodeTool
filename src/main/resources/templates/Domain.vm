@@ -104,8 +104,67 @@ public class ${className} implements Serializable {
         public void ${prop.setterMethod} (${prop.dataType} ${prop.javaName}) {
             this.${prop.javaName} = ${prop.javaName};
         }
-    #end
+#end
+
+        @Override
+        public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+            ${className} that = (${className}) o;
+
+#foreach($prop in $pkResult)
+            if (${prop.javaName} != null ? !${prop.javaName}.equals(that.${prop.javaName}) : that.${prop.javaName} != null) return false;
+#end
+
+        return true;
+        }
+
+        @Override
+        public int hashCode() {
+#foreach($prop in $pkResult)
+#if($velocityCount == 1)
+                int result = ${prop.javaName} != null ? ${prop.javaName}.hashCode() : 0;
+#else
+                result = 31 * result + (${prop.javaName} != null ? ${prop.javaName}.hashCode() : 0);
+#end
+#end
+
+        return result;
+        }
+
     }
 #end
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ${className} that = (${className}) o;
+
+#foreach($prop in $pkResult)
+        if (${prop.javaName} != null ? !${prop.javaName}.equals(that.${prop.javaName}) : that.${prop.javaName} != null) return false;
+#end
+#foreach($prop in $columnResult)
+        if (${prop.javaName} != null ? !${prop.javaName}.equals(that.${prop.javaName}) : that.${prop.javaName} != null) return false;
+#end
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+#foreach($prop in $pkResult)
+#if($velocityCount == 1)
+        int result = ${prop.javaName} != null ? ${prop.javaName}.hashCode() : 0;
+#else
+        result = 31 * result + (${prop.javaName} != null ? ${prop.javaName}.hashCode() : 0);
+#end
+#end
+#foreach($prop in $columnResult)
+        result = 31 * result + (${prop.javaName} != null ? ${prop.javaName}.hashCode() : 0);
+#end
+        return result;
+    }
 }

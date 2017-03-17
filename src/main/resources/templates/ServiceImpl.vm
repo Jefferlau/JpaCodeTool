@@ -1,23 +1,27 @@
-/**
- * @author: ${author}
- * @version: 1.0
- * @since ${date}
- */
 package ${packagePrefix}.service.impl;
+
 import org.springframework.stereotype.Service;
-import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collection;
 import ${packagePrefix}${daoPkg}.${className}${daoSuffix};
 import ${packagePrefix}${domainPkg}.${className};
 import ${packagePrefix}.service.${className}Service;
+import org.springframework.util.Assert;
 
+/**
+* @author ${author}
+* @version 1.0
+* @since ${date}
+*/
 @Service("${classVar}Service")
 public class ${className}ServiceImpl implements ${className}Service {
-    @Resource(name="${classVar}${daoSuffix}")
     private ${className}${daoSuffix} ${classVar}${daoSuffix};
+
+    @Autowired
+    public ${className}ServiceImpl (${className}${daoSuffix} ${classVar}${daoSuffix}) {
+        Assert.notNull(${classVar}${daoSuffix}, "${classVar}${daoSuffix} must not be null!");
+        this.${classVar}${daoSuffix} = ${classVar}${daoSuffix};
+    }
 
     @Transactional
     public void save${className} (${className} ${classVar}){

@@ -1,16 +1,12 @@
-
-/**
- * @author: ${author}
- * @version: 1.0
- * @since ${date}
- */
 package ${packagePrefix}.service;
 
-import java.util.List;
-import java.util.Collection;
 import ${packagePrefix}${domainPkg}.${className};
-import ${packagePrefix}${daoPkg}.${className}${daoSuffix};
 
+/**
+* @author ${author}
+* @version 1.0
+* @since ${date}
+*/
 public interface ${className}Service {
 
    public void save${className} (${className} ${classVar});

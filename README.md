@@ -5,7 +5,7 @@ JPA 逆向工程生成 Java 代码的工具
 
 **说明**
 
-src/main/resources/templates 代码生成模板目录
+src/main/resources/templates       代码生成模板目录
 src/main/resources/jdbc.properties 配置信息文件：数据库连接的信息，代码生成目录，需要生成代码的表
 src/main/resources/templates.cfg   配置文件：使用哪些代码模板，生成的文件所在的目录
 src/main/resources/templates.cfg   可以使用 jdbc.properties 中定义的变量如：tableName ，javaSource等，避免重复配置

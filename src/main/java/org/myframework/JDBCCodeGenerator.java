@@ -55,7 +55,7 @@ public class JDBCCodeGenerator {
             Column column = new Column();
             column.setName(colName);
             column.setJavaName(fieldName);
-            column.setDataType(dataType.endsWith("Timestamp") ? "java.util.Date" : dataType);
+            column.setDataType(dataType.endsWith("Timestamp") || dataType.endsWith("TIMESTAMP") ? "java.util.Date" : dataType);
             column.setPrecision(String.valueOf(rsmd.getPrecision(i)));
             column.setScale(String.valueOf(rsmd.getScale(i)));
             column.setLength(String.valueOf(rsmd.getColumnDisplaySize(i)));

@@ -90,6 +90,7 @@ public class JDBCCodeGenerator {
         List<String> tableNames = new ArrayList<String>();
 
         String url = properties.getProperty("jdbc.url");
+        String tablePrefix = properties.getProperty("tablePrefix");
         String schema = null;
 
         if (url.contains("jdbc:oracle")) {
@@ -112,8 +113,15 @@ public class JDBCCodeGenerator {
         ResultSet resultSet = meta.getTables(null, schema, "%", new String[]{"TABLE"});
 
         while (resultSet.next()) {
-            tableNames.add(resultSet.getString(3));
-            System.out.println(resultSet.getString(3) + " " + resultSet.getString(5));
+            if (!StringUtil.isEmpty(tablePrefix)) {
+                if (resultSet.getString(3).startsWith(tablePrefix)) {
+                    tableNames.add(resultSet.getString(3));
+                    System.out.println(resultSet.getString(3) + " " + resultSet.getString(5));
+                }
+            } else {
+                tableNames.add(resultSet.getString(3));
+                System.out.println(resultSet.getString(3) + " " + resultSet.getString(5));
+            }
         }
 
         return tableNames;

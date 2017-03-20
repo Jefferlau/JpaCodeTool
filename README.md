@@ -16,5 +16,9 @@ jdbc.properties 中 tableName 支持多种配置方式
 - 多表，多个表名以半角逗号","分割
 - 默认连接中所有表，给定值"%"
 
+tablePrefix 有两个作用
+- 当 tableName 值为"%"时，只处理表名以 tablePrefix 开头的表
+- 生成 Entity 类时类名去掉前缀
+
 **注**
 目前 tableName 不区分大小写，在 Oracle 下正常，其它数据库尚未验证。

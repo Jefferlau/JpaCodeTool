@@ -9,8 +9,13 @@ import ${packagePrefix}${domainPkg}.${className};
 */
 public interface ${className}Service {
 
-   public void save${className} (${className} ${classVar});
+    /**
+     * 保存 ${className}
+     * @param ${classVar}
+     * @return ${className}
+     */
+    ${className} save${className} (${className} ${classVar});
 
-   public void delete${className} (${className} ${classVar});
+    void delete${className} (${className} ${classVar});
 
 }

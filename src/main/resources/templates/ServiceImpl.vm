@@ -24,8 +24,8 @@ public class ${className}ServiceImpl implements ${className}Service {
     }
 
     @Transactional
-    public void save${className} (${className} ${classVar}){
- 		${classVar}${daoSuffix}.save(${classVar});
+    public ${className} save${className} (${className} ${classVar}){
+ 		return ${classVar}${daoSuffix}.save(${classVar});
     }
 
 	@Transactional

@@ -22,3 +22,9 @@ tablePrefix 有两个作用
 
 **注**
 目前 tableName 不区分大小写，在 Oracle 下正常，其它数据库尚未验证。
+
+**执行**
+
+```
+mvn exec:java
+```

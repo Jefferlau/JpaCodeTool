@@ -85,7 +85,7 @@ public class ${className} implements Serializable {
 
 
 #if($pkResult.size() > 1)
-    public class PK implements Serializable {
+    public static class PK implements Serializable {
         private static final long serialVersionUID = 1L;
 #foreach($prop in $pkResult)
         private ${prop.dataType}  ${prop.javaName} ;
